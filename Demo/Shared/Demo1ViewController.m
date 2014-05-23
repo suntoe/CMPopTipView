@@ -112,7 +112,7 @@
         
         popTipView.animation = arc4random() % 2;
 		popTipView.has3DStyle = (BOOL)(arc4random() % 2);
-		
+		popTipView.contentInset = UIEdgeInsetsMake(10, 10, 10, 10);
 		popTipView.dismissTapAnywhere = YES;
         [popTipView autoDismissAnimated:YES atTimeInterval:3.0];
 

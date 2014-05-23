@@ -316,11 +316,12 @@
 
             }
         }
-        
+        textFrame = UIEdgeInsetsInsetRect(textFrame, UIEdgeInsetsMake(self.contentInset.top, 0, self.contentInset.bottom, 0));
         NSMutableParagraphStyle *textParagraphStyle = [[NSMutableParagraphStyle alloc] init];
         textParagraphStyle.alignment = self.textAlignment;
         textParagraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
-        
+        textParagraphStyle.headIndent  = self.contentInset.left;
+        textParagraphStyle.tailIndent  = -self.contentInset.right;
         if ([self.message respondsToSelector:@selector(drawWithRect:options:attributes:context:)]) {
             [self.message drawWithRect:textFrame
                                options:NSStringDrawingUsesLineFragmentOrigin attributes:@{
@@ -402,7 +403,8 @@
             NSMutableParagraphStyle *textParagraphStyle = [[NSMutableParagraphStyle alloc] init];
             textParagraphStyle.alignment = self.textAlignment;
             textParagraphStyle.lineBreakMode  =NSLineBreakByWordWrapping;
-
+            textParagraphStyle.headIndent  = self.contentInset.left;
+            textParagraphStyle.tailIndent  = -self.contentInset.right;
             textSize = [self.message boundingRectWithSize:CGSizeMake(rectWidth, 99999.0)
                                                   options:NSStringDrawingUsesLineFragmentOrigin
                                                attributes:@{
@@ -460,7 +462,11 @@
     }
     
 	_bubbleSize = CGSizeMake(textSize.width + _cornerRadius*2, textSize.height + _cornerRadius*2);
-	
+    if (self.customView == nil)
+    {
+        _bubbleSize.height+= (self.contentInset.top + self.contentInset.bottom);
+    }
+    
 	UIView *superview = containerView.superview;
 	if ([superview isKindOfClass:[UIWindow class]])
 		superview = containerView;
