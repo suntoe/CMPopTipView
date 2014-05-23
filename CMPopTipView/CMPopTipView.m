@@ -318,17 +318,18 @@
         }
         textFrame = UIEdgeInsetsInsetRect(textFrame, UIEdgeInsetsMake(self.contentInset.top, 0, self.contentInset.bottom, 0));
         NSMutableParagraphStyle *textParagraphStyle = [[NSMutableParagraphStyle alloc] init];
-        textParagraphStyle.alignment = self.textAlignment;
-        textParagraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
-        textParagraphStyle.headIndent  = self.contentInset.left;
-        textParagraphStyle.tailIndent  = -self.contentInset.right;
+        textParagraphStyle.alignment           = self.textAlignment;
+        textParagraphStyle.lineBreakMode       = NSLineBreakByWordWrapping;
+        textParagraphStyle.headIndent          = self.contentInset.left;
+        textParagraphStyle.firstLineHeadIndent = self.contentInset.left;
+        textParagraphStyle.tailIndent          = -self.contentInset.right;
         if ([self.message respondsToSelector:@selector(drawWithRect:options:attributes:context:)]) {
             [self.message drawWithRect:textFrame
-                               options:NSStringDrawingUsesLineFragmentOrigin attributes:@{
-                                                                                          NSFontAttributeName: self.textFont,
-                                                                                          NSParagraphStyleAttributeName: textParagraphStyle,
-                                                                                          NSForegroundColorAttributeName: self.textColor
-                                                                                          }
+                               options:NSStringDrawingUsesLineFragmentOrigin
+                            attributes:@{NSFontAttributeName: self.textFont,
+                                         NSParagraphStyleAttributeName: textParagraphStyle,
+                                         NSForegroundColorAttributeName: self.textColor
+                                         }
                                context:nil];
         }
         else {
@@ -401,10 +402,11 @@
     if (self.message!=nil) {
         if ([self.message respondsToSelector:@selector(boundingRectWithSize:options:attributes:context:)]) {
             NSMutableParagraphStyle *textParagraphStyle = [[NSMutableParagraphStyle alloc] init];
-            textParagraphStyle.alignment = self.textAlignment;
-            textParagraphStyle.lineBreakMode  =NSLineBreakByWordWrapping;
-            textParagraphStyle.headIndent  = self.contentInset.left;
-            textParagraphStyle.tailIndent  = -self.contentInset.right;
+            textParagraphStyle.alignment           = self.textAlignment;
+            textParagraphStyle.lineBreakMode       = NSLineBreakByWordWrapping;
+            textParagraphStyle.headIndent          = self.contentInset.left;
+            textParagraphStyle.firstLineHeadIndent = self.contentInset.left;
+            textParagraphStyle.tailIndent          = -self.contentInset.right;
             textSize = [self.message boundingRectWithSize:CGSizeMake(rectWidth, 99999.0)
                                                   options:NSStringDrawingUsesLineFragmentOrigin
                                                attributes:@{
@@ -465,8 +467,8 @@
     if (self.customView == nil)
     {
         _bubbleSize.height+= (self.contentInset.top + self.contentInset.bottom);
+        _bubbleSize.width += (self.contentInset.right + self.contentInset.left);
     }
-    
 	UIView *superview = containerView.superview;
 	if ([superview isKindOfClass:[UIWindow class]])
 		superview = containerView;
